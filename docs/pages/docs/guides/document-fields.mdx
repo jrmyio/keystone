@@ -20,38 +20,6 @@ You can see the changes both in the toolbar of the editor, and in the field conf
 
 <DocumentFeaturesFormAndCode />
 
-## Rendering
-
-To render the document in a React app, use the `@keystone-next/document-renderer` package.
-
-```tsx
-import { DocumentRenderer } from '@keystone-next/document-renderer';
-
-<DocumentRenderer document={document} />;
-```
-
-### Overriding the default renderers
-
-```tsx
-import { DocumentRenderer, DocumentRendererProps } from '@keystone-next/document-renderer';
-
-const renderers: DocumentRendererProps['renderers'] = {
-  // use your editor's autocomplete to see what other renderers you can override
-  inline: {
-    bold: ({ children }) => {
-      return <strong>{children}</strong>;
-    },
-  },
-  block: {
-    paragraph: ({ children, textAlign }) => {
-      return <p style={{ textAlign }}>{children}</p>;
-    },
-  },
-};
-
-<DocumentRenderer document={document} renderers={renderers} />;
-```
-
 ## Inline Relationships
 
 The document field can also have inline relationships for things like mentions.
@@ -91,8 +59,8 @@ To include the label and extra data from the selection specified in the relation
 ```graphql
 query {
   allPosts {
-    content {
-      document(hydrateRelationships: true)
+    content(hydrateRelationships: true) {
+      document
     }
   }
 }
@@ -100,7 +68,7 @@ query {
 
 Whenever a value is saved to the document field, the extra data from the selection and the label on relationships are removed (if they exist) so only the id is stored.
 
-## Custom Editor Blocks
+## Component Blocks
 
 Component blocks let you add custom blocks to the editor that can accept unstructured content and render a form that renders arbitrary React components for input.
 
@@ -460,7 +428,39 @@ component({
 });
 ```
 
-### Rendering custom editor blocks
+## Rendering
+
+To render the document in a React app, use the `@keystone-next/document-renderer` package.
+
+```tsx
+import { DocumentRenderer } from '@keystone-next/document-renderer';
+
+<DocumentRenderer document={document} />;
+```
+
+### Overriding the default renderers
+
+```tsx
+import { DocumentRenderer, DocumentRendererProps } from '@keystone-next/document-renderer';
+
+const renderers: DocumentRendererProps['renderers'] = {
+  // use your editor's autocomplete to see what other renderers you can override
+  inline: {
+    bold: ({ children }) => {
+      return <strong>{children}</strong>;
+    },
+  },
+  block: {
+    paragraph: ({ children, textAlign }) => {
+      return <p style={{ textAlign }}>{children}</p>;
+    },
+  },
+};
+
+<DocumentRenderer document={document} renderers={renderers} />;
+```
+
+### Rendering Component blocks
 
 #### Typing props for rendering component blocks
 
